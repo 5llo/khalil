@@ -7,7 +7,7 @@ use App\Http\Controllers\users\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\review\ReviewController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -48,7 +48,22 @@ Route::group([
     Route::get('/product/{letter}',[ProductController::class,'filterProductsByCategory']);
     Route::get('/product/{id}',[ProductController::class,'show']);
     Route::get('/all-users',[UserController::class,'index']);
-
 });
+
+##############  ROUTE REVIEW ##################################
+Route::group(['middleware' => 'auth:sanctum'],
+
+function (){
+    Route::post('/addReview',[ReviewController::class,'store']);
+    Route::get('/allreview',[ReviewController::class,'index']);
+    Route::match(['put','patch'], '/update_review/{id}',[ReviewController::class,'update']);
+    Route::delete('/delete-review/{id}',[ReviewController::class,'delete']);
+    Route::get('/all-user-reviews/{user}',[ReviewController::class,'getAllUserReview']);
+    Route::get('/all-product-reviews/{product}',[ReviewController::class,'getAllProductReview']);
+
+
+
+}
+);
 
 

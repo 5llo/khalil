@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Traits\GeneralTrait;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Validator;
+use Illuminate\Support\Facades\Validator;
+
 use function PHPUnit\Framework\isEmpty;
 
 class AuthController
@@ -26,10 +27,14 @@ class AuthController
             ]);
 
         if($validator->fails()){
+
             return $this->errorResponse($validator->errors(),422);
         }
         try {
-            $roles = Role::whereIn('id', $request['roles_id'])->get();
+
+//###########  $roles = Role::whereIn('id',$request['roles_id'])->get();###################
+            $roles = Role::find(intval($request['roles_id']))->get();
+
             if($roles->count()==0)
             {
                 return $this->errorResponse('No roles with such ids',500);
